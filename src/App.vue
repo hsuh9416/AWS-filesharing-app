@@ -3,7 +3,6 @@ import { Authenticator } from '@aws-amplify/ui-vue';
 import '@aws-amplify/ui-vue/styles.css';
 </script>
 <template>
-  <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
   <Authenticator>
     <template v-slot="{ user, signOut }">
       <img alt="Vue logo" src="./assets/logo.png"/>
@@ -14,12 +13,10 @@ import '@aws-amplify/ui-vue/styles.css';
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
   components: {
-    // HelloWorld,
     Authenticator
   }
 }
