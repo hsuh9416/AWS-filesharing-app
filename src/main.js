@@ -4,6 +4,10 @@ import AmplifyVue from "@aws-amplify/ui-vue";
 import { Amplify, Auth } from 'aws-amplify';
 import awsconfig from './aws-exports';
 
+import "bootstrap"
+import "bootstrap/dist/css/bootstrap.min.css"
+import '@aws-amplify/ui-vue/styles.css';
+
 Amplify.configure(awsconfig);
 
 const app = createApp(App);

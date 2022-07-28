@@ -1,23 +1,28 @@
 <script setup>
 import { Authenticator } from '@aws-amplify/ui-vue';
-import '@aws-amplify/ui-vue/styles.css';
 </script>
 <template>
-  <Authenticator>
-    <template v-slot="{ user, signOut }">
-      <div id="app">
-        <MainHeader/>
-        <MainBody :msg="user.username"/>
-        <button @click="signOut">Sign Out</button>
-        <MainFooter/>
-      </div>
-    </template>
-  </Authenticator>
+  <div id="app" class="container">
+    <MainHeader/>
+    <Authenticator>
+      <template v-slot="{ user, signOut }">
+          <MenuBar
+            :msg="user.username" 
+            @signout="signOut"
+          />
+          <MainBody 
+            @submit="onSubmit"
+          />
+      </template>
+    </Authenticator>
+    <MainFooter/>
+  </div>
 </template>
 
 <script>
 
 import MainHeader from "@/components/MainHeader.vue"
+import MenuBar from "@/components/MenuBar.vue"
 import MainBody from "@/components/MainBody.vue"
 import MainFooter from "@/components/MainFooter.vue"
 
@@ -26,19 +31,14 @@ export default {
   components: {
     Authenticator,
     MainHeader,
+    MenuBar,
     MainBody,
     MainFooter
+  },
+    methods: {
+      onSubmit(){
+        alert("Submitted:D")
+      }
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
