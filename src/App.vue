@@ -5,19 +5,29 @@ import '@aws-amplify/ui-vue/styles.css';
 <template>
   <Authenticator>
     <template v-slot="{ user, signOut }">
-      <img alt="Vue logo" src="./assets/logo.png"/>
-      <h1>Hello {{ user.username }}!</h1>
-      <button @click="signOut">Sign Out</button>
+      <div id="app">
+        <MainHeader/>
+        <MainBody :msg="user.username"/>
+        <button @click="signOut">Sign Out</button>
+        <MainFooter/>
+      </div>
     </template>
   </Authenticator>
 </template>
 
 <script>
 
+import MainHeader from "@/components/MainHeader.vue"
+import MainBody from "@/components/MainBody.vue"
+import MainFooter from "@/components/MainFooter.vue"
+
 export default {
   name: 'App',
   components: {
-    Authenticator
+    Authenticator,
+    MainHeader,
+    MainBody,
+    MainFooter
   }
 }
 </script>
