@@ -7,6 +7,7 @@ import { Authenticator } from '@aws-amplify/ui-vue';
     <MainHeader/>
     <Authenticator>
       <template v-slot="{ user, signOut }">
+          <input type="hidden" id="userName" :value="user.username"/>
           <MenuBar
             :msg="user.username" 
             @signout="signOut"
@@ -22,13 +23,14 @@ import { Authenticator } from '@aws-amplify/ui-vue';
 
 <script>
 
-import MainHeader from "@/components/MainHeader.vue"
-import MenuBar from "@/components/MenuBar.vue"
-import MainBody from "@/components/MainBody.vue"
-import MainFooter from "@/components/MainFooter.vue"
-import awsConfig from '@/api/awsConfig.js'
+import MainHeader from "@/components/MainHeader.vue";
+import MenuBar from "@/components/MenuBar.vue";
+import MainBody from "@/components/MainBody.vue";
+import MainFooter from "@/components/MainFooter.vue";
 import AWS from 'aws-sdk';
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import awsConfig from "@/api/awsConfig.js";
+
+
 
 export default {
   name: 'App',
@@ -39,21 +41,11 @@ export default {
     MainBody,
     MainFooter
   },
-  data(){
-    return {
-        ddbClient: null   
-    }
-  },
-  created(){
-    this.ddbClient = new DynamoDBClient({region: awsConfig.Region});
-  },
   methods: {
     onSubmit(payload){
         let { file, emailList } = payload
         let fileName = file.name
-        console.log(fileName);
-        console.log(emailList);
-
+  
         let upload = new AWS.S3.ManagedUpload({ // upload file first
           params: {
             Bucket: awsConfig.BucketName,
@@ -63,17 +55,45 @@ export default {
         });
 
         let promise = upload.promise();
-
         promise.then(
           function(data) {
-            console.log(data)
-            alert("Successfully uploaded file.");
+            let fileInfo = {
+                ETag: { S: data.ETag },
+                uploader: { S: document.querySelector("#userName").value },
+                uploadBucket: {S: data.Bucket},
+                uploadLocation: {S: data.Location},
+                uploadKey: {S: data.key},
+                uploadedDate: { S: JSON.stringify(new Date()) },
+                fileName: { S: fileName },
+                size: { S: file.size +" KB"},
+                sharedMailAddresses: { S: emailList.join(', ') },
+                modifiedDate: { S: JSON.stringify(file.lastModifiedDate) }
+            }  
+            console.log(fileInfo);
+            // Create the DynamoDB service object
+
+            var params = {
+              TableName: awsConfig.DynamoDBTable,
+              Item: fileInfo
+            };
+            
+            // Call DynamoDB to add the item to the table
+            new AWS.DynamoDB({apiVersion: '2012-08-10'}).putItem(params, function(err, data) {
+              if (err) {
+                console.log("Error", err);
+              } else {
+                console.log("Success", data);
+                alert("Successfully uploaded file.");
+              }
+            });
           },
           function(err) {
             console.log(err)
-            return alert("There was an error uploading your file: ", err.message);
+            alert("There was an error uploading your file: ", err.message);
           }
         );
+
+
     }
   }
 }

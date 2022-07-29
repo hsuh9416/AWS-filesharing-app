@@ -82,12 +82,13 @@
 </template>
 
 <script>
-
+/* eslint-disable */
 export default {
   name: "MainBody",
   data(){
         return {
             file: null,
+            regExp: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
             email1: '',
             email2: '',
             email3: '',
@@ -107,13 +108,12 @@ export default {
 
   },
   methods: {
-    /* eslint-disable */
+
       validateEmail(event){
         let value = event.target.value.trim();
         let id = event.target.id;
         this.validations[id] = true;
-        check = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-        if(value !== '' && !check.test(value)){
+        if(value !== '' && !this.regExp.test(value)){
             this.validations[id] = false;
             this[id] = '';
             this.$refs[id].focus();
