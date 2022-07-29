@@ -41,10 +41,9 @@ export default {
   },
     methods: {
       onSubmit(payload){
-          const { file, emailList } = payload
-
-          console.log(file);
+          let { file, emailList } = payload
           let fileName = file.name
+          console.log(fileName);
           console.log(emailList);
 
           let upload = new AWS.S3.ManagedUpload({
