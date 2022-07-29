@@ -4,7 +4,7 @@
             <div clss="d-flex">
                 <div class="p-2 text-end">
                 <span>Log In as UserID: <strong>{{ msg }}</strong></span>
-                <button type="button" class="btn btn-primary" @click="onSignout">Sign Out</button>
+                <button type="button" class="btn btn-outline-dark" @click="onSignout">Sign Out</button>
                 </div>
             </div>
         </div>

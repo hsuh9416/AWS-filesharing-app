@@ -1,94 +1,80 @@
 <template>
   <div class="row g-5 body-container">
-    <div class="col body-content border">
-
-      <div clss="d-flex justify-content-start">  
-        <div id="fileGroup">
-          <span class="form-label">File to Share</span>
-          <input class="form-control" type="file" id="formFile">
-        </div>
-      </div>
-
-      <div clss="d-flex justify-content-start">  
-        <div id="emailGroup">
-          <span class="form-label">Send Address</span>
-          <div class="form-floating mb-3">
-              <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-              <label for="floatingInput">Email address</label>
-          </div>
-          <div class="form-floating mb-3">
-              <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-              <label for="floatingInput">Email address</label>
-          </div>
-          <div class="form-floating mb-3">
-              <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-              <label for="floatingInput">Email address</label>
-          </div>
-          <div class="form-floating mb-3">
-              <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-              <label for="floatingInput">Email address</label>
-          </div>
-          <div class="form-floating mb-3">
-              <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-              <label for="floatingInput">Email address</label>
+    <div class="col-md body-content border justify-content-center">
+      <form>
+        <div>  
+          <div id="fileGroup">
+            <span class="form-label">
+              File to Share
+            </span>
+            <input 
+              class="form-control" 
+              type="file" id="formFile"
+              @change="handleFileChange($event)"
+            />
           </div>
         </div>
-      </div>
 
-      <div clss="d-flex flex-row">
-        <div class="d-grid gap-2 mt-3 mb-3">
-          <button type="button" class="btn btn-primary btn-lg" @click="onSubmit">Submit</button>
+        <div>  
+          <div id="emailGroup">
+            <span class="form-label">Send Address</span>
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <label for="floatingInput">Email address</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <label for="floatingInput">Email address</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <label for="floatingInput">Email address</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <label for="floatingInput">Email address</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <label for="floatingInput">Email address</label>
+            </div>
+          </div>
         </div>
-      </div>
 
+        <div>
+          <div class="d-grid gap-2 mt-3 mb-3">
+            <button 
+              type="button" 
+              class="btn btn-outline-primary btn-lg" 
+              @click="onSubmit"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
     
-    <div class="col body-content border ">
-      <div clss="d-flex justify-content-start">
-        <div id="SharedGroup">
-          <span class="form-label">Shared List</span>
-          <table class="table text-center">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
   </div>
 </template>
 
 <script>
+
 export default {
   name: "MainBody",
+  data(){
+        return {
+            file: '',
+            emailList: []
+        }
+  },
   methods: {
     onSubmit(){
-      this.$emit('submit')
+      const { file, emailList } = this
+      this.$emit('submit', { file, emailList })
+    },
+    handleFileChange(evt){
+      this.file = evt.target.files[0]
     }
   }
 }
@@ -103,7 +89,7 @@ span {
 }
 
 .body-container {
-      padding: 20px; 
+      padding: 30px 200px; 
 }
 
 .body-content {

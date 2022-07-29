@@ -10,7 +10,8 @@ import '@aws-amplify/ui-vue/styles.css';
 
 Amplify.configure(awsconfig);
 
+
 const app = createApp(App);
 app.use(AmplifyVue);
-app.use(Auth)
+app.use(Auth);
 app.mount("#app");

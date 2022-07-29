@@ -1,5 +1,6 @@
 <script setup>
 import { Authenticator } from '@aws-amplify/ui-vue';
+
 </script>
 <template>
   <div id="app" class="container">
@@ -25,6 +26,9 @@ import MainHeader from "@/components/MainHeader.vue"
 import MenuBar from "@/components/MenuBar.vue"
 import MainBody from "@/components/MainBody.vue"
 import MainFooter from "@/components/MainFooter.vue"
+import awsConfig from '@/api/awsConfig.js'
+import AWS from 'aws-sdk';
+
 
 export default {
   name: 'App',
@@ -36,8 +40,33 @@ export default {
     MainFooter
   },
     methods: {
-      onSubmit(){
-        alert("Submitted:D")
+      onSubmit(payload){
+          const { file, emailList } = payload
+
+          console.log(file);
+          let fileName = file.name
+          console.log(emailList);
+
+          let upload = new AWS.S3.ManagedUpload({
+            params: {
+              Bucket: awsConfig.BucketName,
+              Key: fileName,
+              Body: file
+            }
+          });
+
+          let promise = upload.promise();
+
+          promise.then(
+            function(data) {
+              console.log(data)
+              alert("Successfully uploaded file.");
+            },
+            function(err) {
+              console.log(err)
+              return alert("There was an error uploading your file: ", err.message);
+            }
+          );
       }
   }
 }
