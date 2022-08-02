@@ -1,6 +1,5 @@
 <script setup>
 import { Authenticator } from '@aws-amplify/ui-vue';
-
 </script>
 <template>
   <div id="app" class="container">
@@ -46,6 +45,7 @@ export default {
         let { file, emailList } = payload
         let fileName = file.name
   
+        // Upload the file to S3
         let upload = new AWS.S3.ManagedUpload({ // upload file first
           params: {
             Bucket: awsConfig.BucketName,
@@ -55,6 +55,7 @@ export default {
         });
 
         let promise = upload.promise();
+
         promise.then(
           function(data) {
             let fileInfo = {
@@ -70,7 +71,7 @@ export default {
                 modifiedDate: { S: JSON.stringify(file.lastModifiedDate) }
             }  
             console.log(fileInfo);
-            // Create the DynamoDB service object
+
 
             var params = {
               TableName: awsConfig.DynamoDBTable,
@@ -86,6 +87,9 @@ export default {
                 alert("Successfully uploaded file.");
               }
             });
+
+            // Send the download link to the EmailAddresses
+            console.log('TODO: connect with Lambda please!');
           },
           function(err) {
             console.log(err)
