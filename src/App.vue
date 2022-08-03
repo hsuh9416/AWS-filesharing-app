@@ -86,7 +86,7 @@ export default {
 
             // Send the download link to the EmailAddresses
             awsConfig.Lambda.invoke({ 
-                FunctionName : awsConfig.LambdaFunctionName,
+                FunctionName : awsConfig.LambdaSendFunction,
                 InvocationType : 'RequestResponse',
                 LogType: 'None',
                 Payload:  JSON.stringify(payload)

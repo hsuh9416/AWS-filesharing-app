@@ -30,7 +30,7 @@
                 <input type="email" class="form-control" id= "email1" ref="email1" v-model="email1" @blur="validateEmail($event)">
                 <label>Email address</label>
                 <span class="form-alert" v-show="!validations.email1">
-                  Please ENTER the CORRECT form of EMAIL address!
+                  Please ENTER the CORRECT form of EMAIL address!                
                 </span>
             </div>
             <div class="form-floating mb-3">
@@ -82,6 +82,8 @@
 </template>
 
 <script>
+import awsConfig from "@/api/index.js";
+
 /* eslint-disable */
 export default {
   name: "MainBody",
@@ -105,18 +107,52 @@ export default {
               notEmpty: true
             }
         }
-
   },
   methods: {
+      validateSubscription(value){
+        // Check If subscribed before submission
+        let payload = {
+          ARN: awsConfig.SNSArn,
+          Email: value
+        }
 
+        awsConfig.Lambda.invoke({ 
+            FunctionName : awsConfig.LambdaCheckFunction,
+            InvocationType : 'RequestResponse',
+            LogType: 'None',
+            Payload:  JSON.stringify(payload)
+          }, 
+          function (error, data) {
+            if(error){
+              console.log(error);
+              alert("There was an error when checking the email!");
+              location.reload();
+            }
+            else{
+              let payload = JSON.parse(data.Payload);
+              if(payload.status === 'Unsubscribed'){
+                alert("[Warning] This email("+ payload.email +") needs to be subscribed!");
+              }
+              else if(payload.status === 'Pending'){
+                alert("[Warning] This email("+ payload.email +") needs to be confirmed from the owner!");
+              }
+            }
+          }
+        );
+      },
       validateEmail(event){
         let value = event.target.value.trim();
         let id = event.target.id;
         this.validations[id] = true;
-        if(value !== '' && !this.regExp.test(value)){
-            this.validations[id] = false;
-            this[id] = '';
-            this.$refs[id].focus();
+        if(value !== ''){
+          if(!this.regExp.test(value)){
+              this.validations[id] = false;
+              this[id] = '';
+              this.$refs[id].focus();
+          }
+          else{
+            this.validateSubscription(value);
+          }
         }
       },
       checkInput(){

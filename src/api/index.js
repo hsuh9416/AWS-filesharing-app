@@ -7,7 +7,8 @@ const Region = "us-east-2";
 const IdentityPoolId = "us-east-2:c7a23de6-8f5a-44c6-b837-c9c7e8e563b8";
 const DynamoDBTable = "cs633Table";
 const SNSArn = "arn:aws:sns:us-east-2:979445859874:cs633sns"
-const LambdaFunctionName = "sendmail"
+const LambdaCheckFunction = "checkSubscription"
+const LambdaSendFunction = "sendmail"
 
 AWS.config.update({
     region: Region,
@@ -29,6 +30,7 @@ const awsConfig = {
     DynamoDBTable,
     SNSArn,
     Lambda,
-    LambdaFunctionName
+    LambdaCheckFunction,
+    LambdaSendFunction
 }
 export default awsConfig;
