@@ -99,7 +99,7 @@ export default {
                   let result = JSON.parse(data.Payload)
                   alert(result.msg);
                   
-                  if(result.result != 0){ // Uploaded the file but not shared
+                  if(!result.result){ // Uploaded the file but not shared
                     fileInfo['sharedMailAddresses'] = { S: 'N/A' };
                   }
 
