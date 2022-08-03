@@ -94,17 +94,15 @@ export default {
               function (error, data) {
                 if(error){
                   console.log(error);
-                  alert("There was an error when sending your file!");
-                  location.reload();
                 }
                 else{
                   let result = JSON.parse(data.Payload)
                   alert(result.msg);
                   
                   if(result.result != 0){ // Uploaded the file but not shared
-                    fileInfo['sharedMailAddresses'] = 'N/A';
+                    fileInfo['sharedMailAddresses'] = { S: 'N/A' };
                   }
-                  
+
                   // Call DynamoDB to add the item to the table
                   new AWS.DynamoDB({apiVersion: '2012-08-10'})
                     .putItem({
@@ -114,8 +112,6 @@ export default {
                     function(err, data) {
                       if (err) {
                         console.log("Error", err);
-                        alert("There was an error when updating DB!");
-                        location.reload();
                       } else {
                         console.log("Success", data);
                         alert("Successfully uploaded file.");
@@ -129,9 +125,7 @@ export default {
 
           },
           function(err) {
-            console.log(err)
-            alert("There was an error when uploading your file: ", err.message);
-            location.reload();
+            console.log(err);
           }
         );
 
