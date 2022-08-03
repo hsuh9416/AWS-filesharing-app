@@ -70,23 +70,8 @@ export default {
                 sharedMailAddresses: { S: emailList.join(', ') },
                 modifiedDate: { S: JSON.stringify(file.lastModifiedDate) }
             }  
-            console.log(fileInfo);
 
-
-            var params = {
-              TableName: awsConfig.DynamoDBTable,
-              Item: fileInfo
-            };
-            
-            // Call DynamoDB to add the item to the table
-            new AWS.DynamoDB({apiVersion: '2012-08-10'}).putItem(params, function(err, data) {
-              if (err) {
-                console.log("Error", err);
-              } else {
-                console.log("Success", data);
-                alert("Successfully uploaded file.");
-              }
-            });
+            // console.log(fileInfo); // Check the data
 
             let payload = {
               S3: {
@@ -100,10 +85,36 @@ export default {
             };
 
             // Send the download link to the EmailAddresses
-            awsConfig.lambdaApi.post({payload}).then( res => {
-              console.log(res)
-            });
-            
+            awsConfig.Lambda.invoke({ 
+                FunctionName : awsConfig.LambdaFunctionName,
+                InvocationType : 'RequestResponse',
+                LogType: 'None',
+                Payload:  JSON.stringify(payload)
+              }, 
+              function (error, data) {
+                if(error)
+                  console.log(error);
+                else{
+                  alert(data.Payload);
+                  // Call DynamoDB to add the item to the table
+                  new AWS.DynamoDB({apiVersion: '2012-08-10'})
+                    .putItem({
+                      TableName: awsConfig.DynamoDBTable,
+                      Item: fileInfo
+                    }, 
+                    function(err, data) {
+                      if (err) {
+                        console.log("Error", err);
+                      } else {
+                        console.log("Success", data);
+                        alert("Successfully uploaded file.");
+                      }
+                    }
+                  );
+                }
+              }
+            );
+
           },
           function(err) {
             console.log(err)
