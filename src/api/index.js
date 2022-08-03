@@ -8,7 +8,7 @@ const IdentityPoolId = "us-east-2:c7a23de6-8f5a-44c6-b837-c9c7e8e563b8";
 const DynamoDBTable = "cs633Table";
 const SNSArn = "arn:aws:sns:us-east-2:979445859874:cs633sns"
 const LambdaCheckFunction = "checkSubscription"
-const LambdaSendFunction = "sendmail"
+const LambdaSendFunction = "sendEmail"
 
 AWS.config.update({
     region: Region,
