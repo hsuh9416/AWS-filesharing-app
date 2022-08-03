@@ -27,7 +27,7 @@ import MenuBar from "@/components/MenuBar.vue";
 import MainBody from "@/components/MainBody.vue";
 import MainFooter from "@/components/MainFooter.vue";
 import AWS from 'aws-sdk';
-import awsConfig from "@/api/awsConfig.js";
+import awsConfig from "@/api/index.js";
 
 
 
@@ -88,8 +88,22 @@ export default {
               }
             });
 
+            let payload = {
+              S3: {
+                Bucket: awsConfig.BucketName,
+                Key: fileName
+              },
+              SNS: {
+                Emaillist: emailList,
+                ARN: awsConfig.SNSArn
+              }
+            };
+
             // Send the download link to the EmailAddresses
-            console.log('TODO: connect with Lambda please!');
+            awsConfig.lambdaApi.post({payload}).then( res => {
+              console.log(res)
+            });
+            
           },
           function(err) {
             console.log(err)
