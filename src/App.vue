@@ -92,10 +92,15 @@ export default {
                 Payload:  JSON.stringify(payload)
               }, 
               function (error, data) {
-                if(error)
+                if(error){
                   console.log(error);
+                  alert("There was an error when sending your file!");
+                  location.reload();
+                }
                 else{
-                  alert(data.Payload);
+                  let result = JSON.parse(data.Payload)
+                  alert(result.msg);
+                  
                   // Call DynamoDB to add the item to the table
                   new AWS.DynamoDB({apiVersion: '2012-08-10'})
                     .putItem({
@@ -105,9 +110,12 @@ export default {
                     function(err, data) {
                       if (err) {
                         console.log("Error", err);
+                        alert("There was an error when updating DB!");
+                        location.reload();
                       } else {
                         console.log("Success", data);
                         alert("Successfully uploaded file.");
+                        location.reload();
                       }
                     }
                   );
@@ -118,7 +126,8 @@ export default {
           },
           function(err) {
             console.log(err)
-            alert("There was an error uploading your file: ", err.message);
+            alert("There was an error when uploading your file: ", err.message);
+            location.reload();
           }
         );
 
