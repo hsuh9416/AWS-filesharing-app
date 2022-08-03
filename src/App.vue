@@ -68,7 +68,7 @@ export default {
                 fileName: { S: fileName },
                 size: { S: file.size +" KB"},
                 sharedMailAddresses: { S: emailList.join(', ') },
-                modifiedDate: { S: JSON.stringify(file.lastModifiedDate) }
+                modifiedDate: { S: JSON.stringify(file.lastModifiedDate)}
             }  
 
             // console.log(fileInfo); // Check the data
@@ -100,6 +100,10 @@ export default {
                 else{
                   let result = JSON.parse(data.Payload)
                   alert(result.msg);
+                  
+                  if(result.result != 0){ // Uploaded the file but not shared
+                    fileInfo['sharedMailAddresses'] = 'N/A';
+                  }
                   
                   // Call DynamoDB to add the item to the table
                   new AWS.DynamoDB({apiVersion: '2012-08-10'})
