@@ -21,15 +21,12 @@ import { Authenticator } from '@aws-amplify/ui-vue';
 </template>
 
 <script>
-
 import MainHeader from "@/components/MainHeader.vue";
 import MenuBar from "@/components/MenuBar.vue";
 import MainBody from "@/components/MainBody.vue";
 import MainFooter from "@/components/MainFooter.vue";
 import AWS from 'aws-sdk';
 import awsConfig from "@/api/index.js";
-
-
 
 export default {
   name: 'App',
