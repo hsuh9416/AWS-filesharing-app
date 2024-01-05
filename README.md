@@ -1,5 +1,6 @@
 # filesharing-app
-
+- A product project from CS633 Cloud Computing in University of Alabama at Birmingham.
+- Full creditted.
 ## Project setup
 ```
 npm install
