@@ -1,10 +1,13 @@
 import AWS from 'aws-sdk';
 
-const ACCESS_KEY = "AKIA6IC4FYYRIV5Z5YDW";
-const SECRET_ACCESS_KEY = "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";
+/*
+ Below properties are removed for the security
+*/
+const ACCESS_KEY = ""; 
+const SECRET_ACCESS_KEY = "";
 const BucketName = "fileuploadcs633";
 const Region = "us-east-2";
-const IdentityPoolId = "us-east-2:c7a23de6-8f5a-44c6-b837-c9c7e8e563b8";
+const IdentityPoolId = "";
 const DynamoDBTable = "cs633Table";
 const SNSArn = "arn:aws:sns:us-east-2:979445859874:cs633sns"
 const LambdaCheckFunction = "checkSubscription"
